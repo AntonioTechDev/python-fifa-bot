@@ -1,31 +1,37 @@
 import time
 import os
-import numpy as np
-from screen import trova_e_clicca
 import pyautogui
+from screen import trova_e_clicca
 
 def start_remote_play():
-#   Start Remote Play directly
+    # Percorso all'applicazione Remote Play
     remote_play_path = "C:\\Program Files (x86)\\Sony\\PS Remote Play\\RemotePlay.exe"
+    
+    # Verifica che il percorso esista
+    if not os.path.exists(remote_play_path):
+        print(f"Errore: L'applicazione Remote Play non è stata trovata in '{remote_play_path}'.")
+        return
+
+    # Avvia Remote Play
     os.startfile(remote_play_path)
-
-#   Wait for Remote Play to load
-    time.sleep(5)
-    trova_e_clicca('./images/1step.png')
-
     time.sleep(10)
-    trova_e_clicca('./images/2step.png')
 
-    pyautogui.write('antoniodebiase2003@gmail.com')
-    time.sleep(5)
+    # Funzione di aiuto per eseguire azioni in sequenza
+    def perform_action(image_path, action=None, delay_after=5):
+        try:
+            trova_e_clicca(image_path)
+            if action:
+                action()
+            time.sleep(delay_after)
+        except Exception as e:
+            print(f"Errore durante l'esecuzione dell'azione per l'immagine {image_path}. Dettagli: {e}")
 
-    trova_e_clicca('./images/3step.png')
-    time.sleep(5)
+    # Esegue le azioni in sequenza
+    perform_action('./images/1step.png', delay_after=10)
+    perform_action('./images/2step.png', action=lambda: pyautogui.write('antoniodebiase2003@gmail.com'), delay_after=5)
+    perform_action('./images/3step.png', delay_after=5)
+    perform_action('./images/4step.png', action=lambda: pyautogui.write('test'), delay_after=5)
+    perform_action('./images/5step.png')
 
-    trova_e_clicca('./images/4step.png')
-    pyautogui.write('test')
-
-    time.sleep(5)
-    trova_e_clicca('./images/5step.png')
-
+# Etestsegui la funzione
 start_remote_play()
