@@ -30,8 +30,22 @@ def start_remote_play():
     perform_action('./images/1step.png', delay_after=10)
     perform_action('./images/2step.png', action=lambda: pyautogui.write('antoniodebiase2003@gmail.com'), delay_after=5)
     perform_action('./images/3step.png', delay_after=5)
-    perform_action('./images/4step.png', action=lambda: pyautogui.write('test'), delay_after=5)
+    perform_action('./images/4step.png', action=lambda: pyautogui.write('U03N$0Crpxe5'), delay_after=5)
     perform_action('./images/5step.png')
 
 # Etestsegui la funzione
 start_remote_play()
+
+#x - ESC-ESC-ESC 
+#TROVA FIFA
+#CLICCA X
+# ATTENDI CARICAMENTO
+# CLICCA X FINO AL MENU
+
+#ULTIMATE
+#R1 - CERCA SQUAD
+#SU
+#X
+#SOPRA SOPRA
+
+
