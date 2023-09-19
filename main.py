@@ -47,5 +47,3 @@ start_remote_play()
 #SU
 #X
 #SOPRA SOPRA
-
-

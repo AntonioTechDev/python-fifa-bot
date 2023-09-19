@@ -1,8 +1,14 @@
 import pandas as pd
 import pyotp
+import requests
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
 from concurrent.futures import ThreadPoolExecutor
+import time
+
+#style-manager-styling
+
 
 USER_AGENTS = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -21,37 +27,117 @@ def generate_totp_code(secret):
     totp = pyotp.TOTP(secret)
     return totp.now()
 
-def esegui_login(account, password, secret, proxy=None, user_agent=None):
+def get_captcha_public_key(driver):
+    try:
+        element = driver.find_element(By.ID, 'FunCaptcha-Token')
+        value = element.get_attribute('value')
+        for item in value.split('|'):
+            if item.startswith('pk='):
+                return item.split('=')[1]
+    except Exception as e:
+        print(f"Errore durante la ricerca della chiave pubblica: {e}")
+        return None
+
+
+def solve_captcha(api_key, public_key, page_url):
+    MAX_RETRIES = 5
+    DELAY = 10  # ritardo in secondi
+
+    try:
+        response = requests.post('http://2captcha.com/in.php', {
+            'key': api_key,
+            'method': 'funcaptcha',
+            'publickey': public_key,
+            'pageurl': page_url,
+            'json': 1
+        })
+
+        request_id = response.json().get('request')
+
+        for i in range(MAX_RETRIES):
+            time.sleep(DELAY)  # Attendere prima di fare la richiesta di soluzione
+            solution_response = requests.get(f'http://2captcha.com/res.php?key={api_key}&action=get&id={request_id}&json=1')
+            solution = solution_response.json().get('request')
+
+            if solution != "CAPCHA_NOT_READY":
+                return solution
+            else:
+                print(f"Soluzione non pronta, tentativo {i+1}/{MAX_RETRIES}. Attendere {DELAY} secondi...")
+
+        print("Numero massimo di tentativi raggiunto senza ottenere una soluzione valida.")
+        return None
+
+    except Exception as e:
+        print(f"Errore durante la risoluzione del captcha: {e}")
+        return None
+
+def esegui_login(index, account, password, secret, proxy=None, user_agent=None):
     chrome_options = Options()
-    
-    if proxy:
-        chrome_options.add_argument(f"--proxy-server={proxy}")
-    
     if user_agent:
         chrome_options.add_argument(f"user-agent={user_agent}")
     
-    # Aggiungi le estensioni
-    chrome_options.add_extension('path_to_canvas_defender.crx')
-    chrome_options.add_extension('path_to_ublock_origin.crx')
-    chrome_options.add_extension('path_to_privacy_badger.crx')
-    chrome_options.add_extension('path_to_webrtc_network_limiter.crx')
-    
-    driver = webdriver.Chrome(executable_path='path_to_chromedriver', options=chrome_options)
-    driver.get("http://localhost/your_login_page")
+    driver = webdriver.Chrome(options=chrome_options)
+    driver.get("https://www.playstation.com/it-it/playstation-network/")
+    time.sleep(5)
 
-    driver.find_element_by_id("username_id").send_keys(account)
-    driver.find_element_by_id("password_id").send_keys(password)
-    driver.find_element_by_id("login_button_id").click()
+    try:
+        url_before = driver.current_url
+        print(url_before)
+        driver.find_element(By.CSS_SELECTOR, '#sb-social-toolbar-root .psw-root button.web-toolbar__signin-button').click()
+        # driver.find_element_by_css_selector("#sb-social-toolbar-root .psw-root .web-toolbar__signin-button").click()
+        time.sleep(10)
+        url_after = driver.current_url
+        print("Dopo il click, URL:", url_after)
+        driver.find_element(By.CSS_SELECTOR, 'input[name="email"]').send_keys(account)
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR, '#signin-entrance-button').click()
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR, '#signin-password-form-password input[aria-label="Password"]').send_keys(password)
+        time.sleep(5)
+        driver.find_element(By.CSS_SELECTOR, '#signin-password-button').click()
+        time.sleep(7)
 
-    totp_code = generate_totp_code(secret)
-    driver.find_element_by_id("totp_code_id").send_keys(totp_code)
-    driver.find_element_by_id("submit_totp_code_id").click()
+        driver.execute_script("document.title = 'Istanza:  + {index};'")
 
-    driver.quit()
+        iframe_element = driver.find_element(By.CSS_SELECTOR, '[data-e2e*="enforcement-frame"]')
+        driver.switch_to.frame(iframe_element)
+
+        public_key = get_captcha_public_key(driver)
+
+        # Supponiamo che l'iframe abbia un ID "my_iframe"
+        driver.switch_to.frame("game-core-frame")
+        # Ora cerca l'elemento all'interno dell'iframe
+
+        time.sleep(5)
+
+        try:
+            # Prova a trovare e fare clic sul primo elemento
+            driver.find_element(By.CSS_SELECTOR, '.home button.button').click()
+        except:
+            # Se il primo elemento non viene trovato, cerca e fai clic sul secondo elemento
+            driver.find_element(By.CSS_SELECTOR, '#verifyButton').click()
+
+        driver.switch_to.default_content()
+
+        time.sleep(10)
+
+        if public_key:
+            captcha_solution = solve_captcha('34ece13990a4234b7fb1f439fe790535', public_key, driver.current_url)
+            if captcha_solution:
+                # Use the captcha_solution as needed
+                print("Soluzione CAPTCHA:", captcha_solution)
+            else:
+                print("Impossibile ottenere la soluzione captcha.")
+        else:
+            print("Chiave pubblica non trovata.")
+
+    except Exception as e:
+        print(f"Errore durante il processo di login: {e}")
+
+    time.sleep(50)
 
 def main():
-    df = pd.read_excel("path_to_excel_file.xlsx", engine='openpyxl')
-    
+    df = pd.read_excel("./python_account.xlsx", engine='openpyxl')
     with ThreadPoolExecutor(max_workers=10) as executor:
         for index, row in df.iterrows():
             account = row["Account"]
@@ -59,7 +145,8 @@ def main():
             secret = row["Secret"]
             proxy = row.get("Proxy", None)
             user_agent = USER_AGENTS[index % len(USER_AGENTS)]
-            executor.submit(esegui_login, account, password, secret, proxy, user_agent)
+            executor.submit(esegui_login, index, account, password, secret, proxy, user_agent)
+            
 
 if __name__ == "__main__":
     main()
