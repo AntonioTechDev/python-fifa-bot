@@ -18,4 +18,7 @@ pip install threading
 pip install atexit
 pip install time
 pip install asyncio
-
+pip install opencv-python
+pip install scikit-image
+pip install Pillow
+ pip install numpy
