@@ -1,7 +1,17 @@
+# DA COMPLETARE !!!!
+# DA COMPLETARE !!!!
+# DA COMPLETARE !!!!
+# DA COMPLETARE !!!!
+
 import time
 import os
 import pyautogui
+import pyperclip
 from screen import trova_e_clicca
+
+def paste_text(text):
+    pyperclip.copy(text)
+    pyautogui.hotkey('ctrl', 'v')
 
 def start_remote_play():
     # Percorso all'applicazione Remote Play
@@ -27,23 +37,11 @@ def start_remote_play():
             print(f"Errore durante l'esecuzione dell'azione per l'immagine {image_path}. Dettagli: {e}")
 
     # Esegue le azioni in sequenza
-    perform_action('./images/1step.png', delay_after=10)
-    perform_action('./images/2step.png', action=lambda: pyautogui.write('antoniodebiase2003@gmail.com'), delay_after=5)
-    perform_action('./images/3step.png', delay_after=5)
-    perform_action('./images/4step.png', action=lambda: pyautogui.write('U03N$0Crpxe5'), delay_after=5)
-    perform_action('./images/5step.png')
+    perform_action('./images/1-step-Button.png', delay_after=10)
+    perform_action('./images/2-step-button.png', action=lambda: paste_text('antoniodebiase2003@gmail.com'), delay_after=5)
+    perform_action('./images/3-step-button.png', delay_after=5)
+    perform_action('./images/4-step-button.png', action=lambda: paste_text('h8b#h7j^xJHn#Hoy3EmC'), delay_after=5)
+    perform_action('./images/5-step-button.png', delay_after=10)
 
-# Etestsegui la funzione
+# Esegui la funzione
 start_remote_play()
-
-#x - ESC-ESC-ESC 
-#TROVA FIFA
-#CLICCA X
-# ATTENDI CARICAMENTO
-# CLICCA X FINO AL MENU
-
-#ULTIMATE
-#R1 - CERCA SQUAD
-#SU
-#X
-#SOPRA SOPRA

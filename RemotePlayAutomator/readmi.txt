@@ -1,0 +1,16 @@
+Librerie utilizzate: 
+
+import asyncio
+import threading
+import atexit
+import time
+
+from pyremoteplay import RPDevice
+from pyremoteplay.receiver import QueueReceiver
+
+pip install asyncio
+pip install threading
+pip install atexit
+pip install time
+pip install asyncio
+

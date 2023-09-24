@@ -1,3 +1,8 @@
+# DA COMPLETARE !!!!
+# DA COMPLETARE !!!!
+# DA COMPLETARE !!!!
+# DA COMPLETARE !!!!
+
 import pandas as pd
 import pyotp
 import requests
@@ -77,8 +82,9 @@ def esegui_login(index, account, password, secret, proxy=None, user_agent=None):
         chrome_options.add_argument(f"user-agent={user_agent}")
     
     driver = webdriver.Chrome(options=chrome_options)
+    
     driver.get("https://www.playstation.com/it-it/playstation-network/")
-    time.sleep(5)
+    time.sleep(10)
 
     try:
         url_before = driver.current_url

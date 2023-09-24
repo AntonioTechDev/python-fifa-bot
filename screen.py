@@ -3,6 +3,7 @@ import pyautogui
 def trova_e_clicca(immagine_ricerca):
     # Effettua uno screenshot dello schermo
     screenshot = pyautogui.screenshot()
+    screenshot.save("screenshot.png")
 
     # Ricerca le coordinate dell'immagine all'interno dello screenshot
     posizione_elemento = pyautogui.locateOnScreen(immagine_ricerca, confidence=0.8)
