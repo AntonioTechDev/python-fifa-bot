@@ -21,4 +21,10 @@ pip install asyncio
 pip install opencv-python
 pip install scikit-image
 pip install Pillow
- pip install numpy
+pip install numpy
+
+Cose da fare:
+# Aggiungere re-conessione in caso di perdita sessione
+# Aumentare distanze fra i tasti 
+# aggiungere loop di verifica nel main 
+# sistemare funzioni dei tasti
