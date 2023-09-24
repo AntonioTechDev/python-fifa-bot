@@ -1,5 +1,7 @@
 START COMMAND
 .\python-fifa-bot\RemotePlayAutomator\src\main.py
+cd RemotePlayAutomator\src
+python main.py
 
 Librerie utilizzate: 
 
