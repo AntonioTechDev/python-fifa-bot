@@ -1,3 +1,6 @@
+START COMMAND
+.\python-fifa-bot\RemotePlayAutomator\src\main.py
+
 Librerie utilizzate: 
 
 import asyncio
