@@ -10,10 +10,10 @@ async def commands(device):
     
     # Assicurati che la sessione sia pronta prima di procedere
     if device.ready:
-        # await go_to_ps_home(device)
-        # await launch_fifa_game(device)
-        # await go_to_squadBattle(device)
-        #await launch_squadBattle(device)
+        await go_to_ps_home(device)
+        await launch_fifa_game(device)
+        await go_to_squadBattle(device)
+        await launch_squadBattle(device)
         await random_play(device)
     else:
         print("La sessione non è pronta!")
