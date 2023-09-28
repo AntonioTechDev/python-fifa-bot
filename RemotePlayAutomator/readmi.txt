@@ -1,18 +1,18 @@
 START COMMAND
-.\python-fifa-bot\RemotePlayAutomator\src\main.py
 cd RemotePlayAutomator\src
 python main.py
 
+!!!!Procedura da eseguire prima startare src/main.py!!!!
+
+Configurazione acc console
+1 - python -m pyremoteplay <ip>
+2 - Loggarsi all'url generato
+3 - copiare l'url "redirect" nel terminale
+4 - account loggato
+5 - Startare src/main.py
+
 Librerie utilizzate: 
-
-import asyncio
-import threading
-import atexit
-import time
-
-from pyremoteplay import RPDevice
-from pyremoteplay.receiver import QueueReceiver
-
+Python 3.11.5
 pip install asyncio
 pip install threading
 pip install atexit
@@ -23,8 +23,3 @@ pip install scikit-image
 pip install Pillow
 pip install numpy
 
-Cose da fare:
-# Aggiungere re-conessione in caso di perdita sessione
-# Aumentare distanze fra i tasti 
-# aggiungere loop di verifica nel main 
-# sistemare funzioni dei tasti

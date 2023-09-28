@@ -1,4 +1,3 @@
-import asyncio
 from pyremoteplay import RPDevice
 
 def connect_to_device(ip_address):
