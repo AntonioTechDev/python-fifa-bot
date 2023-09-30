@@ -2,8 +2,9 @@ from remote_play.connect import connect_to_device, disconnect_from_device
 from remote_play.controller import inizialize_controller
 from remote_play.session import start
 from bot_actions.main import commands
-from image_processing.capture import capture_frame, save_image_correctly
+from bot_actions.image_processing.capture import capture_frame
 import asyncio
+import os
 
 ip_address = '192.168.1.12' #YOUR ID OF PS
 MAX_RETRIES = 10  # Numero massimo di tentativi
@@ -24,21 +25,17 @@ async def main():
                 if device:
                     print("Connesso con successo al dispositivo Remote Play!")
                     connected = True
-                    if disconnected_before:  # Se ci siamo disconnessi in precedenza, eseguiamo la funzione
-                        await on_successful_reconnect()  # Supponendo che tu abbia una funzione di questo tipo
-                    else:
-                        start(device)
+                    # if disconnected_before:  # Se ci siamo disconnessi in precedenza, eseguiamo la funzione
+                    #     await on_successful_reconnect()  # Supponendo che tu abbia una funzione di questo tipo
+                    # else:
                 else:
                     print("Impossibile connettersi al dispositivo Remote Play.")
                     retries += 1
                     continue
 
+                start(device)
+
             await asyncio.sleep(5)
-            image = await capture_frame(device)
-            print(type(image))
-            print(len(image))  # Mostra la lunghezza della lista
-            print(image[:5])
-            await save_image_correctly(image, 'test.jpg')
 
             if connected and not initialized:
                 await inizialize_controller(device)
