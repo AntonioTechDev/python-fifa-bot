@@ -10,10 +10,20 @@ async def play_autonomously(device):
         print(f"Errore durante random_play: {e}")
         raise e  # Rilancia l'eccezione per gestirla al livello superiore se necessario
 
+# Da aggiustare -> Corrispondenza non riuscita
 async def go_to_squadBattle(device):
     print('Verso squad battle')
     await down(device)
-    await cross(device)
+    while True:
+        # la verifica non va perchè lo sfondo è differente. Aggiungere verifica su ogni sfondo
+        isUltimateTeam = await find_element('bot_actions/image_processing/images/imageSegments/Fut_select1.png', device)
+        print("corrispondeza: " + str(isUltimateTeam))
+        if isUltimateTeam:
+            await cross(device)
+            break
+        else:
+            await up(device)
+
     await asyncio.sleep(31) # Additional 31 seconds to make it 35 seconds in total
     await r1(device)
     await r1(device)
