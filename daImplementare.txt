@@ -1,0 +1,14 @@
+Funzionalità software da implementare: 
+
+1- Entrata in ultimate team tramite immagine
+2- Aggiungere reconessione funzionante. La reconessione deve continuare nel modo corretto da dove si è bloccata
+3- Implementare logica per scrivere tramite i giocatori di fifa tramite script
+4- Collegamento Api con FUTBIN
+5- Creare logica per passare dati da API a input ps
+6- Implementare logica per comprare i giocatori 
+7- Aggiungere verifiche varie 
+8- Implementare cambio account nella stessa console tramite script 
+
+Funzionalità Hardware: 
+
+1- Trovare specialista arduino a cui affidare progetto arduino 
