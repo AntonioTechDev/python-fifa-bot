@@ -12,3 +12,11 @@ Funzionalità software da implementare:
 Funzionalità Hardware: 
 
 1- Trovare specialista arduino a cui affidare progetto arduino 
+
+Bot da implementare
+
+1- Crea account PSN
+2- Crea account instagram
+3- Crea account EA
+4- Crea account XBOX
+5- Crea account tik tok
